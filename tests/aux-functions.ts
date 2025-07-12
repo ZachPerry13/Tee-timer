@@ -33,7 +33,7 @@ export async function confirmOrRetry(page,SecondTime) {
     var count = await page.getByText('This tee time is not available.').count();
     if (count > 0) {
       console.log('Tee Time not available');
-      await page.getByText('Ok').first().click();
+      await page.getByRole('button', { name: 'OK' }).click();
       await page.getByText(SecondTime).first().click();
     } else {
       console.log('available');
