@@ -57,7 +57,7 @@ setup('Check for Tee Times', async ({ page }) => {
     await page.getByText('15', { exact: true }).click();
     await page.getByText('Show more Morning tee times').first().click();
     await page.getByText('7:50am').first().click();
-    await confirmOrRetry(page, '8:00am')
+    await confirmOrRetry(page, '10:10am')
     await removecarts(page)
     await finalize(page)
   }
