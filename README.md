@@ -31,5 +31,3 @@ Create a crontab to run the flow nightly at 12:01 EST with the following entry:
 ```bash
 1 4 * * * cd ~/Tee-timer && npx playwright test
 ```
-
-This should help users understand and follow the setup process more easily. Good luck!

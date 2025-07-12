@@ -40,7 +40,7 @@ console.log(Day)
 ////////////////////////////////////////START OF FlOW//////////////////////////////////////////////////////
 setup('Check for Tee Times', async ({ page }) => {
 
-  await page.goto('https://lebaronhills.cps.golf/onlineresweb/auth/verify-email');
+  await page.goto(process.env.URL);
 
   //Login
   await page.locator('input[name="email"]').fill(username);
