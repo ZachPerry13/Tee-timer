@@ -2,30 +2,18 @@
 
 This will need to be tweaked to work for you, most importantly, creating a .env file and populating it with your username and PW, and Golf Course's sign in page
 
-.env format is as follows: 
+1.) Clone the Repo onto a linux server that runs 24/7
+
+2.) Create .env file in root of Project. 
+Format is as follows: 
 ------
-USERNAME=perry.z@northeastern.edu
+USERNAME=zachs@email.edu
 PASSWORD=BingBangBongExamplePW
 URL=https://lebaronhills.cps.golf/onlineresweb/auth/verify-email
 ------
-Crontab:
 
+3.) Create Crontab to run this flow nightly at 12:01 EST
+Example Crontab Entry:
+------
 1 4 * * * cd ~/Tee-timer && npx playwright test
-
--------
-File Structure:
-
-├── package-lock.json
-├── package.json
-├── playwright
-├── playwright.config.ts
-├── .env
-├── .gitignore
-├── README.md
-├── screenshots
-├── test-results
-│   └── Lebaron-Check-for-Tee-Times
-│       ├── trace.zip
-│       └── video.webm
-└── tests
-    └── Lebaron.spec.ts
+------
