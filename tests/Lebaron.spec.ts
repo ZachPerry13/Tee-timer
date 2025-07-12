@@ -52,16 +52,6 @@ setup('Check for Tee Times', async ({ page }) => {
   const DayofWeek = whatday(currentDate)
   console.log(DayofWeek)
 
-  //Test
-    if (1 == 1) {
-    await page.getByText('15', { exact: true }).click();
-    await page.getByText('Show more Morning tee times').first().click();
-    await page.getByText('7:50am').first().click();
-    await confirmOrRetry(page, '10:10am')
-    await removecarts(page)
-    await finalize(page)
-  }
-
   //Monday
   if (DayofWeek == '1') {
     console.log('It is a Monday, No Tee Times')
