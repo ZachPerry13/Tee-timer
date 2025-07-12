@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="description" content="CPS Online Reservation">
+    <meta http-equiv="Cache-Control" content="max-age=0, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Club Prophet Systems : Online reservation V4</title>
+    <base href="/onlineresweb/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="preload" href="assets/images/favicon.png" as="image" media="(max-width: 32px)">
+    <link id="appFavicon" rel="icon" type="image/x-icon" href="assets/images/favicon.png">
+
+    <style>
+      /* latin */
+      @font-face {
+        font-display: swap;
+        font-family: "Noto Sans";
+        font-style: normal;
+        font-weight: 400;
+        src: url("./assets/fonts/noto-sans/noto-sans-v25-latin-regular.eot"); /* IE9 Compat Modes */
+        src: local(""),
+          url("./assets/fonts/noto-sans/noto-sans-v25-latin-regular.eot?#iefix")
+            format("embedded-opentype"),
+          /* IE6-IE8 */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-regular.woff2")
+            format("woff2"),
+          /* Super Modern Browsers */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-regular.woff")
+            format("woff"),
+          /* Modern Browsers */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-regular.ttf")
+            format("truetype"),
+          /* Safari, Android, iOS */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-regular.svg#NotoSans")
+            format("svg"); /* Legacy iOS */
+      }
+      /* noto-sans-italic - latin */
+      @font-face {
+        font-display: swap;
+        font-family: "Noto Sans";
+        font-style: italic;
+        font-weight: 400;
+        src: url("./assets/fonts/noto-sans/noto-sans-v25-latin-italic.eot"); /* IE9 Compat Modes */
+        src: local(""),
+          url("./assets/fonts/noto-sans/noto-sans-v25-latin-italic.eot?#iefix")
+            format("embedded-opentype"),
+          /* IE6-IE8 */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-italic.woff2")
+            format("woff2"),
+          /* Super Modern Browsers */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-italic.woff")
+            format("woff"),
+          /* Modern Browsers */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-italic.ttf")
+            format("truetype"),
+          /* Safari, Android, iOS */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-italic.svg#NotoSans")
+            format("svg"); /* Legacy iOS */
+      }
+      /* noto-sans-700 - latin */
+      @font-face {
+        font-display: swap;
+        font-family: "Noto Sans";
+        font-style: normal;
+        font-weight: 700;
+        src: url("./assets/fonts/noto-sans/noto-sans-v25-latin-700.eot"); /* IE9 Compat Modes */
+        src: local(""),
+          url("./assets/fonts/noto-sans-v25-latin-700.eot?#iefix")
+            format("embedded-opentype"),
+          /* IE6-IE8 */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-700.woff2")
+            format("woff2"),
+          /* Super Modern Browsers */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-700.woff")
+            format("woff"),
+          /* Modern Browsers */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-700.ttf")
+            format("truetype"),
+          /* Safari, Android, iOS */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-700.svg#NotoSans")
+            format("svg"); /* Legacy iOS */
+      }
+      /* noto-sans-700italic - latin */
+      @font-face {
+        font-display: swap;
+        font-family: "Noto Sans";
+        font-style: italic;
+        font-weight: 700;
+        src: url("./assets/fonts/noto-sans/noto-sans-v25-latin-700italic.eot"); /* IE9 Compat Modes */
+        src: local(""),
+          url("./assets/fonts/noto-sans/noto-sans-v25-latin-700italic.eot?#iefix")
+            format("embedded-opentype"),
+          /* IE6-IE8 */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-700italic.woff2")
+            format("woff2"),
+          /* Super Modern Browsers */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-700italic.woff")
+            format("woff"),
+          /* Modern Browsers */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-700italic.ttf")
+            format("truetype"),
+          /* Safari, Android, iOS */
+            url("./assets/fonts/noto-sans/noto-sans-v25-latin-700italic.svg#NotoSans")
+            format("svg"); /* Legacy iOS */
+      }
+      @font-face {
+        font-family: "Material Icons";
+        font-style: normal;
+        font-weight: 400;
+        src: url(./assets/MaterialIcons-Regular.eot); /* For IE6-8 */
+        src: local("Material Icons"), local("MaterialIcons-Regular"),
+          url(./assets/MaterialIcons-Regular.woff2) format("woff2"),
+          url(./assets/MaterialIcons-Regular.woff) format("woff"),
+          url(./assets/MaterialIcons-Regular.ttf) format("truetype");
+      }
+
+      .material-icons {
+        font-family: "Material Icons";
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px; /* Preferred icon size */
+        display: inline-block;
+        line-height: 1;
+        text-transform: none;
+        letter-spacing: normal;
+        word-wrap: normal;
+        white-space: nowrap;
+        direction: ltr;
+
+        /* Support for all WebKit browsers. */
+        -webkit-font-smoothing: antialiased;
+        /* Support for Safari and Chrome. */
+        text-rendering: optimizeLegibility;
+
+        /* Support for Firefox. */
+        -moz-osx-font-smoothing: grayscale;
+
+        /* Support for IE. */
+        font-feature-settings: "liga";
+      }
+    </style>
+  <style>:root{--primary-color:#1a237e;--secondary-color:#1565c0;--daily-deal-color:salmon;--warn-color:#ff0000;--background-color:#e5e5e5;--text-color:#2d2d2d;--text-color2:#767676;--background-main-color:#f2f5f9;--border-radius:.75em;--border-color:#e8e8e8;--large-width-content:1024px}*{font-family:Noto Sans,Poppins,sans-serif;outline:none;box-sizing:border-box}body{margin:0;overflow-x:hidden;color:#67757c;font-weight:300;touch-action:manipulation}html{position:relative;min-height:100%;background:#ffffff}</style><link rel="stylesheet" href="styles.dbf0420b68063cec.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.dbf0420b68063cec.css"></noscript></head>
+  <body>
+    <app-root></app-root>
+    <script>
+      if (global === undefined) {
+        var global = window;
+      }
+      window["base-url"] = window.location.pathname;
+    </script>
+    <script>
+      window.MSInputMethodContext &&
+        document.documentMode &&
+        document.write(
+          '<script src="https://cdn.jsdelivr.net/gh/nuxodin/ie11CustomProperties@4.1.0/ie11CustomProperties.min.js" integrity="sha384-av3LQPp5aKnbld8S99ZER4azJ254yT+HqgVVRJMqdIHqElY6sNnNRiiktSWgcwtE" crossorigin="anonymous"><\/script>'
+        );
+    </script>
+  <script src="runtime.7f300034f2e65892.js" type="module"></script><script src="polyfills.0638287581af6a26.js" type="module"></script><script src="scripts.c1545ca6b28f7a419204.js" defer></script><script src="main.9e3c6bedd519ae2f.js" type="module"></script>
+
+</body></html>
