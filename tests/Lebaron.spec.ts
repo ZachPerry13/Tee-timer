@@ -5,7 +5,7 @@ import 'dotenv/config';
 //Variables for the Boys
 const username = process.env.USERNAME;
 const password = process.env.PASSWORD;
-const WeekendTeeTimes = ['9:15am','9:24am','9:33am']
+const WeekendTeeTimes = ['9:15am', '9:24am', '9:33am']
 
 
 // Function to delete all files within a directory
@@ -17,9 +17,7 @@ async function emptyDirectory(directory) {
     console.error(`Error emptying directory: ${directory}`, err);
   }
 }
-
-// Call the function to empty the directory before running the tests
-emptyDirectory('./screenshots'); 
+emptyDirectory('./screenshots');
 
 // Custom Date Function
 function formatDate(date: Date) {
@@ -39,17 +37,28 @@ function whatday(date: Date) {
   const day = date.getDay();
   return `${day}`;
 }
-//Remove Carts Function
-async function removecarts(page){
+
+async function confirmOrRetry(page,SecondTime) {
+    var count = await page.getByText('This tee time is not available.').count();
+    if (count > 0) {
+      console.log('Tee Time not available');
+      await page.getByText('Ok').first().click();
+      await page.getByText(SecondTime).first().click();
+    } else {
+      console.log('available');
+    }
+  }
+
+async function removecarts(page) {
   await page.waitForTimeout(3000);
   const cartElements = await page.getByText('Cart').all();
   var x = 0
   while (x < cartElements.length) {
-      await page.getByText('Cart').nth(x).click();
-      x += 1;
-    }
+    await page.getByText('Cart').nth(x).click();
+    x += 1;
   }
-async function finalize(page){
+}
+async function finalize(page) {
   await page.waitForTimeout(3000);
   await page.getByText('Continue').first().click();
   await page.getByText('Finalize Reservation').first().click();
@@ -70,16 +79,16 @@ console.log('Current Day of week:', whatday(currentDate));
 
 // If One week from now starts with a 0, remove it
 console.log('logme: ', Day[0])
-  if (Day[0] == '0'){
-    console.log(Day[0])
-    Day = Day[1]
-  }
-  console.log(Day)
+if (Day[0] == '0') {
+  console.log(Day[0])
+  Day = Day[1]
+}
+console.log(Day)
 
 ////////////////////////////////////////START OF TESTS//////////////////////////////////////////////////////
 setup('Check for Tee Times', async ({ page }) => {
 
-  await page.goto(process.env.URL);
+  await page.goto('https://lebaronhills.cps.golf/onlineresweb/auth/verify-email');
 
   //Login
   await page.locator('input[name="email"]').fill(username);
@@ -95,9 +104,9 @@ setup('Check for Tee Times', async ({ page }) => {
   if (DayofWeek == '1') {
     console.log('It is a Monday, No Tee Times')
     await page.getByText(Day, { exact: true }).click();
-   //await page.getByText('6:20pm').first().click();
-   //await removecarts(page)
-   //await finalize(page)
+    //await page.getByText('6:20pm').first().click();
+    //await removecarts(page)
+    //await finalize(page)
   }
 
   //Tuesday
@@ -107,23 +116,26 @@ setup('Check for Tee Times', async ({ page }) => {
     await page.getByText(Day, { exact: true }).click();
     await page.getByText('Show more Mid Day tee times').first().click();
     await page.getByText('12:30pm').first().click();
+    await confirmOrRetry(page, '3:30pm')
     await removecarts(page)
     await finalize(page)
   }
 
-    //Wed-Friday
-    if (DayofWeek == '3'|| DayofWeek == '4'|| DayofWeek == '5') {
-      await page.getByText(Day, { exact: true }).click();
-      await page.getByText('2:30pm').first().click();
-      await removecarts(page)
-      await finalize(page)
-    }
+  //Wed-Friday
+  if (DayofWeek == '3' || DayofWeek == '4' || DayofWeek == '5') {
+    await page.getByText(Day, { exact: true }).click();
+    await page.getByText('2:30pm').first().click();
+    await confirmOrRetry(page, '3:30pm')
+    await removecarts(page)
+    await finalize(page)
+  }
 
   //Saturday and Sunday
   if (DayofWeek == '6' || DayofWeek == '0') {
     await page.getByText(Day, { exact: true }).click();
     await page.getByText('Show more Morning tee times').first().click();
     await page.getByText('9:15am').first().click();
+    await confirmOrRetry(page, '10:20am')
     await removecarts(page)
     await finalize(page)
   }
