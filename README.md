@@ -1,22 +1,35 @@
 # Tee-timer
 
-This will need to be tweaked to work for you, most importantly, creating a .env file and populating it with your username and PW, and Golf Course's sign in page
+This is a guide to setting up and running the Tee-timer application. Please note that you will need to customize certain aspects, such as creating a `.env` file with your credentials and specifying the golf course's sign-in page.
 
-1. Clone the Repo onto a linux server that runs 24/7
-`git clone https://github.com/ZachPerry13/Tee-timer`
+## Getting Started
 
+Follow these steps to set up and run the Tee-timer application:
 
-2. Create .env file in root of Project. 
-Format is as follows: 
-------
-USERNAME=zachs@email.edu
-PASSWORD=BingBangBongExamplePW
-URL=https://lebaronhills.cps.golf/onlineresweb/auth/verify-email
-------
+### Step 1: Clone the Repository
 
+Clone the repository onto a Linux server that runs 24/7 using the following command:
 
-3. Create Crontab to run this flow nightly at 12:01 EST
-Example Crontab Entry:
-------
+```bash
+git clone https://github.com/ZachPerry13/Tee-timer
+```
+
+### Step 2: Create .env file
+
+Create a `.env` file in the root of the project with the following format:
+
+```ini
+USERNAME=your_email@example.edu
+PASSWORD=YourPassword123
+URL=https://golf-course-sign-in-page.com/onlineresweb/auth/verify-email
+```
+
+### Step 3: Create Crontab
+
+Create a crontab to run the flow nightly at 12:01 EST with the following entry:
+
+```bash
 1 4 * * * cd ~/Tee-timer && npx playwright test
-------
+```
+
+This should help users understand and follow the setup process more easily. Good luck!
