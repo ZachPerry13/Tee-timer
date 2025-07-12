@@ -1,3 +1,4 @@
 .env
 playwright/.auth
 *test-results/*
+playwright.config.ts
