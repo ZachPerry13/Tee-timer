@@ -10,7 +10,7 @@ URL=https://lebaronhills.cps.golf/onlineresweb/auth/verify-email
 ------
 Crontab:
 
-1 4 * * * cd ~/Lebaron && npx playwright test
+1 4 * * * cd ~/Tee-timer && npx playwright test
 
 -------
 File Structure:
