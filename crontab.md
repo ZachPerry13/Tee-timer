@@ -1,0 +1,1 @@
+1 4 * * * /home/zach/teetimer.sh
