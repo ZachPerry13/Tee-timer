@@ -54,3 +54,10 @@ export async function finalize(page) {
   await page.getByText('Continue').first().click();
   await page.getByText('Finalize Reservation').first().click();
 }
+
+export async function editbooking(page, numberofgolfers, numberofholes){
+    await page.getByRole('button', { name: 'Edit' }).click();
+    await page.getByRole('button', { name: numberofgolfers, exact: true }).click();
+    await page.getByRole('button', { name: numberofholes, exact: true }).click();
+    await page.getByRole('button', { name: 'Submit' }).click();
+}

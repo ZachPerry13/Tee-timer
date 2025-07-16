@@ -1,8 +1,6 @@
 import { test as setup, expect } from '@playwright/test';
 import 'dotenv/config';
-import { emptyDirectory, formatDate, removecarts, finalize, confirmOrRetry, whatday, formatDay} from './aux-functions';
-
-emptyDirectory('./screenshots');
+import { emptyDirectory, formatDate, removecarts, finalize, confirmOrRetry, whatday, formatDay, editbooking} from './aux-functions';
 
 //Variables for the Boys
 declare var process : {
@@ -20,6 +18,7 @@ const WeekendTeeTimes = ['9:15am', '9:24am', '9:33am']
 const currentDate = new Date();
 const oneWeekLater = new Date(currentDate);
 oneWeekLater.setDate(currentDate.getDate() + 7);
+
 var Day = formatDay(oneWeekLater)
 
 
@@ -39,7 +38,7 @@ console.log(Day)
 
 ////////////////////////////////////////START OF FlOW//////////////////////////////////////////////////////
 setup('Check for Tee Times', async ({ page }) => {
-
+  emptyDirectory('./screenshots');
   await page.goto(process.env.URL);
 
   //Login
@@ -54,8 +53,7 @@ setup('Check for Tee Times', async ({ page }) => {
 
   //Monday
   if (DayofWeek == '1') {
-    console.log('It is a Monday, No Tee Times')
-    await page.getByText(Day, { exact: true }).click();
+    console.log('It is a Monday, No Tee Times');
   }
 
   //Tuesday
@@ -63,16 +61,26 @@ setup('Check for Tee Times', async ({ page }) => {
     await page.getByText(Day, { exact: true }).click();
     await page.getByText('Show more Mid Day tee times').first().click();
     await page.getByText('12:30pm').first().click();
-    await confirmOrRetry(page, '3:30pm')
-    await removecarts(page)
-    await finalize(page)
+    await confirmOrRetry(page, '3:30pm');
+    await editbooking(page,1,9);
+    await removecarts(page);
+    await finalize(page);
   }
 
-  //Wed-Friday
-  if (DayofWeek == '3' || DayofWeek == '4' || DayofWeek == '5') {
+  //Weds&Thurs
+  if (DayofWeek == '3' || DayofWeek == '4') {
+    await page.getByText(Day, { exact: true }).click();
+    await page.getByText('12:30pm').first().click();
+    await confirmOrRetry(page, '12:40am');
+    await editbooking(page,1,9);
+    await removecarts(page);
+    await finalize(page);
+  }
+  //Fri
+  if (DayofWeek == '5') {
     await page.getByText(Day, { exact: true }).click();
     await page.getByText('2:30pm').first().click();
-    await confirmOrRetry(page, '3:30pm')
+    await confirmOrRetry(page, '2:40pm')
     await removecarts(page)
     await finalize(page)
   }
@@ -82,12 +90,10 @@ setup('Check for Tee Times', async ({ page }) => {
     await page.getByText(Day, { exact: true }).click();
     await page.getByText('Show more Morning tee times').first().click();
     await page.getByText('9:15am').first().click();
-    await confirmOrRetry(page, '10:20am')
-    await removecarts(page)
-    await finalize(page)
+    await confirmOrRetry(page, '10:20am');
+    await removecarts(page);
+    await finalize(page);
   }
-
-  
 
   // Wait for 3 seconds
   await page.waitForTimeout(6000);
