@@ -70,8 +70,8 @@ setup('Check for Tee Times', async ({ page }) => {
   //Weds&Thurs
   if (DayofWeek == '3' || DayofWeek == '4') {
     await page.getByText(Day, { exact: true }).click();
-    await page.getByText('12:30pm').first().click();
-    await confirmOrRetry(page, '12:40am');
+    await page.getByText('2:30pm').first().click();
+    await confirmOrRetry(page, '2:40pm')
     await editbooking(page,1,9);
     await removecarts(page);
     await finalize(page);
