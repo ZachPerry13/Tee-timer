@@ -12,7 +12,10 @@ declare var process : {
 }
 const username = process.env.USERNAME;
 const password = process.env.PASSWORD;
-const WeekendTeeTimes = ['9:15am', '9:24am', '9:33am']
+const Tuesday_Times = ['12:30pm', '12:40pm']
+const WedThursFri_Times = ['2:30pm', '3:30pm']
+const Weekend_times = ['9:15am', '10:20am']
+
 
 // Get current date and create a new date that is 7 days ahead
 const currentDate = new Date();
@@ -60,8 +63,8 @@ setup('Check for Tee Times', async ({ page }) => {
   if (DayofWeek == '2') {
     await page.getByText(Day, { exact: true }).click();
     await page.getByText('Show more Mid Day tee times').first().click();
-    await page.getByText('12:30pm').first().click();
-    await confirmOrRetry(page, '3:30pm');
+    await page.getByText(Tuesday_Times[0]).first().click();
+    await confirmOrRetry(page, Tuesday_Times[1]);
     await editbooking(page,1,9);
     await removecarts(page);
     await finalize(page);
@@ -70,8 +73,8 @@ setup('Check for Tee Times', async ({ page }) => {
   //Weds&Thurs
   if (DayofWeek == '3' || DayofWeek == '4') {
     await page.getByText(Day, { exact: true }).click();
-    await page.getByText('2:30pm').first().click();
-    await confirmOrRetry(page, '2:40pm')
+    await page.getByText(WedThursFri_Times[0]).first().click();
+    await confirmOrRetry(page, WedThursFri_Times[1])
     await editbooking(page,1,9);
     await removecarts(page);
     await finalize(page);
@@ -79,8 +82,8 @@ setup('Check for Tee Times', async ({ page }) => {
   //Fri
   if (DayofWeek == '5') {
     await page.getByText(Day, { exact: true }).click();
-    await page.getByText('2:30pm').first().click();
-    await confirmOrRetry(page, '2:40pm')
+    await page.getByText(WedThursFri_Times[0]).first().click();
+    await confirmOrRetry(page, WedThursFri_Times[1])
     await removecarts(page)
     await finalize(page)
   }
@@ -89,8 +92,8 @@ setup('Check for Tee Times', async ({ page }) => {
   if (DayofWeek == '6' || DayofWeek == '0') {
     await page.getByText(Day, { exact: true }).click();
     await page.getByText('Show more Morning tee times').first().click();
-    await page.getByText('9:15am').first().click();
-    await confirmOrRetry(page, '10:20am');
+    await page.getByText(Weekend_times[0]).first().click();
+    await confirmOrRetry(page, Weekend_times[1]);
     await removecarts(page);
     await finalize(page);
   }
