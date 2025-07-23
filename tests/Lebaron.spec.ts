@@ -1,6 +1,6 @@
 import { test as setup, expect } from '@playwright/test';
 import 'dotenv/config';
-import { emptyDirectory, formatDate, removecarts, finalize, confirmOrRetry, whatday, formatDay, editbooking } from './aux-functions';
+import { emptyDirectory, formatDate, removecarts, finalize, confirmOrRetry, whatday, formatDay, editbooking, trybothDays } from './aux-functions';
 
 //Set Up Secure Credential Referencing
 declare var process: {
@@ -57,7 +57,7 @@ setup('Check for Tee Times', async ({ page }) => {
 
   //Tuesday
   if (DayofWeek == '2') {
-    await page.getByText(Day, { exact: true }).click();
+    await trybothDays(page, Day)
     await page.getByText('Show more Mid Day tee times').first().click();
     await page.getByText(Tuesday_Times[0]).first().click();
     await confirmOrRetry(page, Tuesday_Times[1]);
@@ -68,7 +68,7 @@ setup('Check for Tee Times', async ({ page }) => {
 
   //Weds&Thurs
   if (DayofWeek == '3' || DayofWeek == '4') {
-    await page.getByText(Day, { exact: true }).click();
+    await trybothDays(page, Day)
     await page.getByText(WedThursFri_Times[0]).first().click();
     await confirmOrRetry(page, WedThursFri_Times[1])
     await editbooking(page, 1, 9);
@@ -77,7 +77,7 @@ setup('Check for Tee Times', async ({ page }) => {
   }
   //Fri
   if (DayofWeek == '5') {
-    await page.getByText(Day, { exact: true }).click();
+    await trybothDays(page, Day)
     await page.getByText(WedThursFri_Times[0]).first().click();
     await confirmOrRetry(page, WedThursFri_Times[1])
     await removecarts(page)
@@ -86,7 +86,7 @@ setup('Check for Tee Times', async ({ page }) => {
 
   //Saturday and Sunday
   if (DayofWeek == '6' || DayofWeek == '0') {
-    await page.getByText(Day, { exact: true }).click();
+    await trybothDays(page, Day)
     await page.getByText('Show more Morning tee times').first().click();
     await page.getByText(Weekend_times[0]).first().click();
     await confirmOrRetry(page, Weekend_times[1]);
