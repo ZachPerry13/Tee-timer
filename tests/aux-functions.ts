@@ -30,16 +30,16 @@ export function whatday(date: Date) {
   return `${day}`;
 }
 
-export async function confirmOrRetry(page, SecondTime) {
-  var count = await page.getByText('This tee time is not available.').count();
-  if (count > 0) {
-    console.log('Tee Time not available');
-    await page.getByRole('button', { name: 'OK' }).click();
-    await page.getByText(SecondTime).first().click();
-  } else {
-    console.log('available');
+export async function confirmOrRetry(page,SecondTime) {
+    var count = await page.getByText('This tee time is not available.').count();
+    if (count > 0) {
+      console.log('Tee Time not available');
+      await page.getByRole('button', { name: 'OK' }).click();
+      await page.getByText(SecondTime).first().click();
+    } else {
+      console.log('available');
+    }
   }
-}
 
 export async function removecarts(page) {
   await page.waitForTimeout(3000);
@@ -56,25 +56,32 @@ export async function finalize(page) {
   await page.getByText('Finalize Reservation').first().click();
 }
 
-export async function editbooking(page, numberofgolfers, numberofholes) {
-  await page.getByRole('button', { name: 'Edit' }).click();
-  await page.getByRole('button', { name: numberofgolfers, exact: true }).click();
-  await page.getByRole('button', { name: numberofholes, exact: true }).click();
-  await page.getByRole('button', { name: 'Submit' }).click();
+export async function editbooking(page, numberofgolfers, numberofholes){
+    await page.getByRole('button', { name: 'Edit' }).click();
+    await page.getByRole('button', { name: numberofgolfers, exact: true }).click();
+    await page.getByRole('button', { name: numberofholes, exact: true }).click();
+    await page.getByRole('button', { name: 'Submit' }).click();
 }
 
 
 
-export async function trybothDays(page, Day) {
-  // Get all elements with the exact text of Day
-  const buttons = page.getByText(Day, { exact: true });
+export async function trybothDays(page, dayText: string) {
+  await page.waitForTimeout(3000);
+  const calendar = page.locator('.main-calendar-days');
 
-  // Loop through matches and click the first enabled one
-  const count = await buttons.count();
+  // Match spans by CSS, then filter to exact text manually
+  const possibleDays = calendar.locator(
+    `.day-background-upper.is-visible:not(.is-disabled)`
+  );
+
+  const count = await possibleDays.count();
   for (let i = 0; i < count; i++) {
-    const button = buttons.nth(i);
-    if (await button.isEnabled()) {
-      await button.click();
+    const day = possibleDays.nth(i);
+    const text = await day.textContent();
+    const isHidden = await day.getAttribute('aria-hidden');
+
+    if (text?.trim() === dayText && isHidden === 'false' && await day.isVisible()) {
+      await day.click();
       break;
     }
   }

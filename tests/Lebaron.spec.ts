@@ -95,7 +95,7 @@ setup('Check for Tee Times', async ({ page }) => {
   }
 
   // Wait for 3 seconds
-  await page.waitForTimeout(6000);
+  await page.waitForTimeout(2000);
   await page.screenshot({ path: 'screenshots/Lebaron/tee_time.png' });
 
 });
