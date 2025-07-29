@@ -1,15 +1,3 @@
-import fs from 'fs-extra'
-
-// Function to delete all files within a directory
-export async function emptyDirectory(directory) {
-  try {
-    fs.emptyDir(directory);
-    console.log(`Successfully emptied directory: ${directory}`);
-  } catch (err) {
-    console.error(`Error emptying directory: ${directory}`, err);
-  }
-}
-
 // Custom Date Function
 export function formatDate(date: Date) {
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -107,7 +95,7 @@ export async function findtime(page, times: Array<String>,){
 }
 
 export async function login(page, username: string, password: string, url: string) {
-  await page.goto(process.env.URL);
+  await page.goto(url);
   await page.locator('input[name="email"]').fill(username);
   await page.getByText('Next').first().click();
   await page.locator('input[name="password"]').fill(password);

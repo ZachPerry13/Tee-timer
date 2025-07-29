@@ -1,6 +1,6 @@
 import { test as setup} from '@playwright/test';
 import 'dotenv/config';
-import { emptyDirectory, formatDate, whatday, formatDay, master, login } from './aux-functions';
+import {formatDate, whatday, formatDay, master, login } from './aux-functions';
 
 //Set Up Secure Credential Referencing
 declare var process: {
@@ -24,22 +24,16 @@ const currentDate = new Date();
 const oneWeekLater = new Date(currentDate);
 oneWeekLater.setDate(currentDate.getDate() + 7);
 const Day = formatDay(oneWeekLater)
+const DayofWeek = whatday(currentDate)
 
-// Print the formatted date of the current date and the new date (1 week later)
 console.log('Current Date:', formatDate(currentDate));
 console.log('One Week Later:', formatDate(oneWeekLater));
 console.log('One Week Later Day:', Day);
-console.log('Current Day of week:', whatday(currentDate));
+console.log('Current Day of week:', DayofWeek);
 
 ////////////////////////////////////////START OF FlOW//////////////////////////////////////////////////////
 setup('Lebaron Tee-Time Grabber', async ({ page }) => {
-  emptyDirectory('./screenshots');
-
-  //Login
   await login(page, username, password, url)
-
-  const DayofWeek = whatday(currentDate)
-  console.log(DayofWeek)
 
   //Monday
   if (DayofWeek == '1') {
