@@ -1,4 +1,3 @@
-import { expect } from '@playwright/test';
 import fs from 'fs-extra'
 
 // Function to delete all files within a directory
@@ -21,7 +20,10 @@ export function formatDate(date: Date) {
 }
 
 export function formatDay(date: Date) {
-  const day = String(date.getDate()).padStart(2, '0');
+  var day = String(date.getDate()).padStart(2, '0');
+  if (day[0] == '0') {
+    day = day[1]
+  }
   return `${day}`;
 }
 
@@ -30,16 +32,16 @@ export function whatday(date: Date) {
   return `${day}`;
 }
 
-export async function confirmOrRetry(page,SecondTime) {
-    var count = await page.getByText('This tee time is not available.').count();
-    if (count > 0) {
-      console.log('Tee Time not available');
-      await page.getByRole('button', { name: 'OK' }).click();
-      await page.getByText(SecondTime).first().click();
-    } else {
-      console.log('available');
-    }
+export async function confirmOrRetry(page, SecondTime) {
+  var count = await page.getByText('This tee time is not available.').count();
+  if (count > 0) {
+    console.log('Tee Time not available');
+    await page.getByRole('button', { name: 'OK' }).click();
+    await page.getByText(SecondTime).first().click();
+  } else {
+    console.log('available');
   }
+}
 
 export async function removecarts(page) {
   await page.waitForTimeout(3000);
@@ -51,21 +53,20 @@ export async function removecarts(page) {
   }
 }
 export async function finalize(page) {
-  await page.waitForTimeout(3000);
   await page.getByText('Continue').first().click();
   await page.getByText('Finalize Reservation').first().click();
 }
 
-export async function editbooking(page, numberofgolfers, numberofholes){
-    await page.getByRole('button', { name: 'Edit' }).click();
-    await page.getByRole('button', { name: numberofgolfers, exact: true }).click();
-    await page.getByRole('button', { name: numberofholes, exact: true }).click();
-    await page.getByRole('button', { name: 'Submit' }).click();
+export async function editbooking(page, numberofgolfers, numberofholes) {
+  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: numberofgolfers, exact: true }).click();
+  await page.getByRole('button', { name: numberofholes, exact: true }).click();
+  await page.getByRole('button', { name: 'Submit' }).click();
 }
 
 
 
-export async function trybothDays(page, dayText: string) {
+export async function findcalendarDay(page, dayText: string) {
   await page.waitForTimeout(3000);
   const calendar = page.locator('.main-calendar-days');
 
@@ -86,5 +87,41 @@ export async function trybothDays(page, dayText: string) {
     }
   }
   await page.locator('#Forward').click();
-  await trybothDays(page, dayText)
+  await findcalendarDay(page, dayText)
+}
+export async function expandteetimes(page){
+  await page.getByText('Show more Mid Day tee times').first().click();
+  await page.getByText('Show more Morning tee times').first().click();
+}
+
+export async function findtime(page, times: Array<String>,){
+  const time = times[0];
+  const count = await page.getByText(time).count();
+  if (count > 0) {
+    await page.getByText(time).first().click();
+    return;
+  }
+
+  // Try the next time recursively
+  await findtime(page, times.slice(1));
+}
+
+export async function login(page, username: string, password: string, url: string) {
+  await page.goto(process.env.URL);
+  await page.locator('input[name="email"]').fill(username);
+  await page.getByText('Next').first().click();
+  await page.locator('input[name="password"]').fill(password);
+  await page.locator('button').filter({ hasText: 'Sign In' }).nth(1).click();
+}
+
+export async function master(page, Day: string, Times: Array<String>, NumberofGolfers: number, NumberofHoles: number, EditBooking: Boolean) {
+  await findcalendarDay(page, Day)
+  await expandteetimes(page)
+  await findtime(page, Times)
+  await confirmOrRetry(page, Times[1]);
+  if (EditBooking == true) {
+    await editbooking(page, NumberofGolfers, NumberofHoles);
+    await removecarts(page);
+  }
+  await finalize(page);
 }
