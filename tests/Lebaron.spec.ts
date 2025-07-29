@@ -63,7 +63,7 @@ setup('Check for Tee Times', async ({ page }) => {
     await confirmOrRetry(page, Tuesday_Times[1]);
     await editbooking(page, 1, 9);
     await removecarts(page);
-    await finalize(page);
+    //await finalize(page);
   }
 
   //Weds&Thurs

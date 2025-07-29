@@ -82,7 +82,9 @@ export async function trybothDays(page, dayText: string) {
 
     if (text?.trim() === dayText && isHidden === 'false' && await day.isVisible()) {
       await day.click();
-      break;
+      return; // stop recursion if day is found and clicked
     }
   }
+  await page.locator('#Forward').click();
+  await trybothDays(page, dayText)
 }
