@@ -41,19 +41,14 @@ export async function removecarts(page) {
   }
 }
 export async function finalize(page) {
-  var count = await page.getByRole('button', { name: 'Continue' }).count();
-  if (count > 0) {
-    await page.getByRole('button', { name: 'Continue' }).first().click();
-  }
-  var count1 = await page.getByRole('button', { name: 'Finalize Reservation.' }).count(); 
-  if (count1 > 0) {
-    await page.getByRole('button', { name: 'Finalize Reservation.' }).first().click();
-    return
-  }
-  await finalize(page)
+  await page.waitForTimeout(3000);
+  await page.getByRole('button', { name: 'Continue' }).click();
 
+  await page.waitForTimeout(3000);
 
+  await page.getByRole('button', { name: 'Finalize Reservation' }).click();
 }
+
 
 export async function editbooking(page, numberofgolfers, numberofholes) {
   await page.getByRole('button', { name: 'Edit' }).click();
