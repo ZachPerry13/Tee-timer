@@ -15,9 +15,9 @@ const password = process.env.PASSWORD;
 const url = process.env.URL;
 
 //Tee Time Arrays
-const Tuesday_Times: Array<String> = ['12:30pm', '12:40pm', '12:50pm' ]
-const WedThursFri_Times: Array<String>  = ['2:30pm', '3:30pm']
-const Weekend_times: Array<String>  = ['9:15am', '10:20am']
+const Tuesday_Times: Array<String> = ['12:30', '12:40', '12:50' ]
+const WedThursFri_Times: Array<String>  = ['8:50','12:50','2:00','2:10','2:20','2:30','2:40', '3:30']
+const Weekend_times: Array<String>  = ['9:15', '10:20']
 
 // Get current date and create a new date that is 7 days ahead
 const currentDate = new Date();

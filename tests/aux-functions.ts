@@ -25,7 +25,7 @@ export async function confirmOrRetry(page, SecondTime) {
   if (count > 0) {
     console.log('Tee Time not available');
     await page.getByRole('button', { name: 'OK' }).click();
-    await page.getByText(SecondTime).first().click();
+    await page.getByText(SecondTime, { exact: true }).first().click();
   } else {
     console.log('available');
   }
@@ -41,8 +41,18 @@ export async function removecarts(page) {
   }
 }
 export async function finalize(page) {
-  await page.getByText('Continue').first().click();
-  await page.getByText('Finalize Reservation').first().click();
+  var count = await page.getByRole('button', { name: 'Continue' }).count();
+  if (count > 0) {
+    await page.getByRole('button', { name: 'Continue' }).first().click();
+  }
+  var count1 = await page.getByRole('button', { name: 'Finalize Reservation.' }).count(); 
+  if (count1 > 0) {
+    await page.getByRole('button', { name: 'Finalize Reservation.' }).first().click();
+    return
+  }
+  await finalize(page)
+
+
 }
 
 export async function editbooking(page, numberofgolfers, numberofholes) {
@@ -50,6 +60,7 @@ export async function editbooking(page, numberofgolfers, numberofholes) {
   await page.getByRole('button', { name: numberofgolfers, exact: true }).click();
   await page.getByRole('button', { name: numberofholes, exact: true }).click();
   await page.getByRole('button', { name: 'Submit' }).click();
+
 }
 
 
@@ -77,16 +88,16 @@ export async function findcalendarDay(page, dayText: string) {
   await page.locator('#Forward').click();
   await findcalendarDay(page, dayText)
 }
-export async function expandteetimes(page){
+export async function expandteetimes(page) {
   await page.getByText('Show more Mid Day tee times').first().click();
   await page.getByText('Show more Morning tee times').first().click();
 }
 
-export async function findtime(page, times: Array<String>,){
+export async function findtime(page, times: Array<String>,) {
   const time = times[0];
-  const count = await page.getByText(time).count();
+  const count = await page.getByText(time, { exact: true }).count();
   if (count > 0) {
-    await page.getByText(time).first().click();
+    await page.getByText(time, { exact: true }).first().click();
     return;
   }
 
