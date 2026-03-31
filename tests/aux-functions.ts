@@ -103,7 +103,6 @@ export async function findtime(page, times: Array<String>,) {
 export async function login(page, username: string, password: string, url: string) {
   await page.goto(url);
   await page.locator('input[name="email"]').fill(username);
-  await page.waitForTimeout(3000);
   await page.getByText('Next').first().click();
   await page.locator('input[name="password"]').fill(password);
   await page.locator('button').filter({ hasText: 'Sign In' }).nth(1).click();
