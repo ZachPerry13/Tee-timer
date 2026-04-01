@@ -21,14 +21,14 @@ const Weekend_times: Array<String>  = ['9:15', '10:20']
 
 // Get current date and create a new date that is 7 days ahead
 const currentDate = new Date();
-const oneWeekLater = new Date(currentDate);
-oneWeekLater.setDate(currentDate.getDate() + 7);
-const Day = formatDay(oneWeekLater)
+const TwoWeeksLater = new Date(currentDate);
+TwoWeeksLater.setDate(currentDate.getDate() + 14);
+const Day = formatDay(TwoWeeksLater)
 const DayofWeek = whatday(currentDate)
 
 console.log('Current Date:', formatDate(currentDate));
-console.log('One Week Later:', formatDate(oneWeekLater));
-console.log('One Week Later Day:', Day);
+console.log('Two Weeks Later:', formatDate(TwoWeeksLater));
+console.log('Two Weeks Later Day:', Day);
 console.log('Current Day of week:', DayofWeek);
 
 ////////////////////////////////////////START OF FlOW//////////////////////////////////////////////////////
