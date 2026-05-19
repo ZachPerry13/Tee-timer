@@ -1,6 +1,7 @@
 import { test as setup} from '@playwright/test';
 import 'dotenv/config';
 import {formatDate, whatday, formatDay, master, login } from './aux-functions';
+import { bypassCloudflareTest } from './bypass_webblocker';
 
 //Set Up Secure Credential Referencing
 declare var process: {
@@ -13,11 +14,12 @@ declare var process: {
 const username = process.env.USERNAME;
 const password = process.env.PASSWORD;
 const url = process.env.URL;
+var newpage;
 
 //Tee Time Arrays
 const Tuesday_Times: Array<String> = ['12:30', '12:40', '12:50' ]
 const WedThursFri_Times: Array<String>  = ['2:30','2:50']
-const Weekend_times: Array<String>  = ['9:15', '10:20']
+const Weekend_times: Array<String>  = ['9:51', '10:20', '10:30']
 
 // Get current date and create a new date that is 7 days ahead
 const currentDate = new Date();
@@ -33,7 +35,8 @@ console.log('Current Day of week:', DayofWeek);
 
 ////////////////////////////////////////START OF FlOW//////////////////////////////////////////////////////
 setup('Lebaron Tee-Time Grabber', async ({ page }) => {
-  await login(page, username, password, url)
+  newpage = await bypassCloudflareTest(url);
+  await login(newpage, username, password, url)
 
   //Monday
   if (DayofWeek == '1') {
@@ -41,7 +44,7 @@ setup('Lebaron Tee-Time Grabber', async ({ page }) => {
   }
   //Tuesday
   if (DayofWeek == '2') {
-    await master(page, Day, Tuesday_Times, 1, 9, true)
+    await master(newpage, Day, Tuesday_Times, 1, 9, true)
   }
   //Weds&Thurs
   if (DayofWeek == '3' || DayofWeek == '4') {

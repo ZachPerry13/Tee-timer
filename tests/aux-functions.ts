@@ -1,3 +1,5 @@
+import { Page } from "@playwright/test";
+
 // Custom Date Function
 export function formatDate(date: Date) {
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -20,7 +22,7 @@ export function whatday(date: Date) {
   return `${day}`;
 }
 
-export async function confirmOrRetry(page, SecondTime) {
+export async function confirmOrRetry(page: { getByText: (arg0: string, arg1: { exact: boolean; } | undefined) => { (): any; new(): any; count: { (): any; new(): any; }; first: { (): { (): any; new(): any; click: { (): any; new(): any; }; }; new(): any; }; }; getByRole: (arg0: string, arg1: { name: string; }) => { (): any; new(): any; click: { (): any; new(): any; }; }; }, SecondTime: String) {
   var count = await page.getByText('This tee time is not available.').count();
   if (count > 0) {
     console.log('Tee Time not available');
@@ -31,7 +33,7 @@ export async function confirmOrRetry(page, SecondTime) {
   }
 }
 
-export async function removecarts(page) {
+export async function removecarts(page: { waitForTimeout: (arg0: number) => any; getByText: (arg0: string) => { (): any; new(): any; all: { (): any; new(): any; }; nth: { (arg0: number): { (): any; new(): any; click: { (): any; new(): any; }; }; new(): any; }; }; }) {
   await page.waitForTimeout(3000);
   const cartElements = await page.getByText('Cart').all();
   var x = 0
@@ -40,7 +42,7 @@ export async function removecarts(page) {
     x += 1;
   }
 }
-export async function finalize(page) {
+export async function finalize(page: { waitForTimeout: (arg0: number) => any; getByRole: (arg0: string, arg1: { name: string; }) => { (): any; new(): any; click: { (): any; new(): any; }; }; }) {
   await page.waitForTimeout(3000);
   await page.getByRole('button', { name: 'Continue' }).click();
 
@@ -50,7 +52,7 @@ export async function finalize(page) {
 }
 
 
-export async function editbooking(page, numberofgolfers, numberofholes) {
+export async function editbooking(page: { getByRole: (arg0: string, arg1: { name: any; exact?: boolean; }) => { (): any; new(): any; click: { (): any; new(): any; }; }; }, numberofgolfers: number, numberofholes: number) {
   await page.getByRole('button', { name: 'Edit' }).click();
   await page.getByRole('button', { name: numberofgolfers, exact: true }).click();
   await page.getByRole('button', { name: numberofholes, exact: true }).click();
@@ -60,7 +62,7 @@ export async function editbooking(page, numberofgolfers, numberofholes) {
 
 
 
-export async function findcalendarDay(page, dayText: string) {
+export async function findcalendarDay(page: { waitForTimeout: (arg0: number) => any; locator: (arg0: string) => { (): any; new(): any; click: { (): any; new(): any; }; }; }, dayText: string) {
   await page.waitForTimeout(3000);
   const calendar = page.locator('.main-calendar-days');
 
@@ -83,12 +85,12 @@ export async function findcalendarDay(page, dayText: string) {
   await page.locator('#Forward').click();
   await findcalendarDay(page, dayText)
 }
-export async function expandteetimes(page) {
+export async function expandteetimes(page: { getByText: (arg0: string) => { (): any; new(): any; first: { (): { (): any; new(): any; click: { (): any; new(): any; }; }; new(): any; }; }; }) {
   await page.getByText('Show more Mid Day tee times').first().click();
   await page.getByText('Show more Morning tee times').first().click();
 }
 
-export async function findtime(page, times: Array<String>,) {
+export async function findtime(page: { getByText: (arg0: String, arg1: { exact: boolean; }) => { (): any; new(): any; count: { (): any; new(): any; }; first: { (): { (): any; new(): any; click: { (): any; new(): any; }; }; new(): any; }; }; }, times: Array<String>,) {
   const time = times[0];
   const count = await page.getByText(time, { exact: true }).count();
   if (count > 0) {
@@ -100,15 +102,15 @@ export async function findtime(page, times: Array<String>,) {
   await findtime(page, times.slice(1));
 }
 
-export async function login(page, username: string, password: string, url: string) {
+export async function login(page: { goto: (arg0: string) => any; locator: (arg0: string) => string[]; getByText: (arg0: string) => { (): any; new(): any; first: { (): { (): any; new(): any; click: { (): any; new(): any; }; }; new(): any; }; }; getByRole: (arg0: string, arg1: { name: string; }) => { (): any; new(): any; fill: { (arg0: string): any; new(): any; }; nth: { (arg0: number): { (): any; new(): any; click: { (): any; new(): any; }; }; new(): any; }; }; }, username: string, password: string, url: string) {
   await page.goto(url);
   await page.locator('input[name="email"]').fill(username);
   await page.getByText('Next').first().click();
-  await page.locator('input[name="password"]').fill(password);
-  await page.locator('button').filter({ hasText: 'Sign In' }).nth(1).click();
+  await page.getByRole('textbox', { name: 'Password' }).fill(password);
+  await page.getByRole('button', { name: 'Sign In' }).nth(1).click();
 }
 
-export async function master(page, Day: string, Times: Array<String>, NumberofGolfers: number, NumberofHoles: number, EditBooking: Boolean) {
+export async function master(page: Page, Day: string, Times: Array<String>, NumberofGolfers: number, NumberofHoles: number, EditBooking: Boolean) {
   await findcalendarDay(page, Day)
   await expandteetimes(page)
   await findtime(page, Times)
