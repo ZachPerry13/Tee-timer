@@ -1,6 +1,6 @@
 import { test as setup} from '@playwright/test';
 import 'dotenv/config';
-import {formatDate, whatday, formatDay, master, login } from './aux-functions';
+import {formatDate, whatday, formatDay, login, findcalendarDay, expandteetimes, findtime, confirmOrRetry, editbooking, removecarts, finalize} from './aux-functions';
 import { bypassCloudflareTest } from './bypass_webblocker';
 
 //Set Up Secure Credential Referencing
@@ -33,9 +33,22 @@ console.log('Two Weeks Later:', formatDate(TwoWeeksLater));
 console.log('Two Weeks Later Day:', Day);
 console.log('Current Day of week:', DayofWeek);
 
+export async function master(page: Page, Day: string, Times: Array<String>, NumberofGolfers: number, NumberofHoles: number, EditBooking: Boolean) {
+  await findcalendarDay(page, Day)
+  await expandteetimes(page)
+  await findtime(page, Times)
+  await confirmOrRetry(page, Times[1]);
+  if (EditBooking == true) {
+    await editbooking(page, NumberofGolfers, NumberofHoles);
+    await removecarts(page);
+  }
+  await finalize(page);
+}
+
 ////////////////////////////////////////START OF FlOW//////////////////////////////////////////////////////
 setup('Lebaron Tee-Time Grabber', async ({ page }) => {
-  newpage = await bypassCloudflareTest(url);
+  
+  var page = newpage = await bypassCloudflareTest(url);
   await login(newpage, username, password, url)
 
   //Monday
@@ -48,16 +61,16 @@ setup('Lebaron Tee-Time Grabber', async ({ page }) => {
   }
   //Weds&Thurs
   if (DayofWeek == '3' || DayofWeek == '4') {
-    await master(page, Day, WedThursFri_Times, 1, 9, true)
+    await master(newpage, Day, WedThursFri_Times, 1, 9, true)
   }
   //Fri
   if (DayofWeek == '5') {
-    await master(page, Day, WedThursFri_Times, 4, 18, false)
+    await master(newpage, Day, WedThursFri_Times, 4, 18, false)
   }
 
   //Saturday and Sunday
   if (DayofWeek == '6' || DayofWeek == '0') {
-    await master(page, Day, Weekend_times, 4, 18, false)
+    await master(newpage, Day, Weekend_times, 4, 18, false)
   }
 
   // Wait for 3 seconds

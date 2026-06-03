@@ -63,8 +63,14 @@ export async function editbooking(page: { getByRole: (arg0: string, arg1: { name
 
 
 export async function findcalendarDay(page: { waitForTimeout: (arg0: number) => any; locator: (arg0: string) => { (): any; new(): any; click: { (): any; new(): any; }; }; }, dayText: string) {
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(7000);
   const calendar = page.locator('.main-calendar-days');
+  const day = page.getByText(dayText, { exact: true })
+
+  if (day.isVisible()) {
+      await day.click();
+      return; // stop recursion if day is found and clicked
+    }
 
   // Match spans by CSS, then filter to exact text manually
   const possibleDays = calendar.locator(
