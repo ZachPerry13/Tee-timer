@@ -67,10 +67,6 @@ export async function findcalendarDay(page: { waitForTimeout: (arg0: number) => 
   const calendar = page.locator('.main-calendar-days');
   const day = page.getByText(dayText, { exact: true })
 
-  if (day.isVisible()) {
-      await day.click();
-      return; // stop recursion if day is found and clicked
-    }
 
   // Match spans by CSS, then filter to exact text manually
   const possibleDays = calendar.locator(
@@ -88,7 +84,7 @@ export async function findcalendarDay(page: { waitForTimeout: (arg0: number) => 
       return; // stop recursion if day is found and clicked
     }
   }
-  await page.locator('#Forward').click();
+  await page.locator('button:nth-child(3)').click();
   await findcalendarDay(page, dayText)
 }
 export async function expandteetimes(page: { getByText: (arg0: string) => { (): any; new(): any; first: { (): { (): any; new(): any; click: { (): any; new(): any; }; }; new(): any; }; }; }) {

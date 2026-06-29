@@ -54,6 +54,9 @@ setup('Lebaron Tee-Time Grabber', async ({ page }) => {
   //Monday
   if (DayofWeek == '1') {
     console.log('It is a Monday, No Tee Times');
+    console.log('Trying Anyways incase it is a holiday or something');
+    await master(newpage, Day, Weekend_times, 4, 18, false)
+
   }
   //Tuesday
   if (DayofWeek == '2') {
